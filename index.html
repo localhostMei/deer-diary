@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deer Diary</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="script.js"></script> 
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <main>
+		<section id="toolbar">
+			<ul>
+				<li>
+					<button onclick="newEntry()">New</button>
+				</li>
+				<li>
+					<button onclick="navPrevious()">Previous</button>
+				</li>
+				<li>
+					<button onclick="navNext()">Next</button>
+				</li>
+				<li>
+					<button onclick="navOldest()">Oldest</button>
+				</li>
+				<li>
+					<button onclick="navLatest()">Latest</button>
+				</li>
+				<li>
+					<button onclick="saveDiary()">Save</button>
+				</li>
+				<li>
+					<button onclick="loadDiary()">Load</button>
+				</li>
+				<li>
+					<button onclick="unloadDiary()">Load</button>
+				</li>
+			</ul>
+		</section>
+		
+		<section id="entries">
+			<h1>dd.mm.yyyy</h1>
+			<div class="entry"></div>
+			<h2>I don't like my life</h2>
+			<p>Text is here text is there text is FUCKING EVERYWHERE</p>
+			<button onclick="removeEntry()">Remove</button>
+		</section>
+		
+		<footer>
+			<p>Made with love by localhostMei.</p>
+		</footer>
+	</main>
+  </body>
+</html>
