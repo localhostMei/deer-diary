@@ -17,11 +17,10 @@ function List() {
 	}
 }
 
-//Todo: Change foot to tail you illiterate
 function LinkedList() {
 	this.increment = 0,
 	this.head = null,
-	this.foot = null,
+	this.tail = null,
 	this.previous = function(position) {
 		let index = this.head;
 		while (index !== null) {
@@ -48,14 +47,14 @@ function LinkedList() {
 		}
 		if (this.head === null) {
 			this.head = this.increment;
-			this.foot = this.increment;
+			this.tail = this.increment;
 			this[this.increment] = value;
 			this.increment++;
 			return;
 		}
 		this[this.increment] = value;
-		this[this.foot].next = this.increment;
-		this.foot = this.increment;
+		this[this.tail].next = this.increment;
+		this.tail = this.increment;
 		this.increment++;
 	}
 	this.prepend = function(value) {
@@ -64,7 +63,7 @@ function LinkedList() {
 		}
 		if (this.head === null) {
 			this.head = this.increment;
-			this.foot = this.increment;
+			this.tail = this.increment;
 			this[this.increment] = value;
 			this.increment++;
 			return;
@@ -80,13 +79,13 @@ function LinkedList() {
 		}
 		if (this.head === null) {
 			this.head = this.increment;
-			this.foot = this.increment;
+			this.tail = this.increment;
 			this[this.increment] = value;
 			this.increment++;
 			return;
 		}
-		if (this.foot === position) {
-			this.foot = this.increment;
+		if (this.tail === position) {
+			this.tail = this.increment;
 		}
 		this[this.increment] = value;
 		this[this.increment].next = this[position].next;
@@ -97,8 +96,8 @@ function LinkedList() {
 		if (this.head === null) {
 			return;
 		}
-		if (this.foot === position) {
-			this.foot = this.previous(position);
+		if (this.tail === position) {
+			this.tail = this.previous(position);
 		}
 		if (this.head === position) {
 			this.head = this[this.head].next;
