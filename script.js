@@ -52,10 +52,6 @@ function LinkedList() {
 		}
 		if (this.head === null) {
 			this.head = this.increment;
-			this.tail = this.increment;
-			this[this.increment] = value;
-			this.increment++;
-			return true;
 		}
 		this[this.increment] = value;
 		this[this.tail].next = this.increment;
@@ -69,11 +65,7 @@ function LinkedList() {
 			return false;
 		}
 		if (this.head === null) {
-			this.head = this.increment;
 			this.tail = this.increment;
-			this[this.increment] = value;
-			this.increment++;
-			return true;
 		}
 		this[this.increment] = value;
 		this[this.increment].next = this.head;
@@ -107,17 +99,22 @@ function LinkedList() {
 		if (this.head === null) {
 			return false;
 		}
-		if (this.tail === position) {
+		if (this.head === this.tail) {
+			this.head = null;
+			this.tail = null;
+		} else if (this.tail === position) {
 			this.tail = this.previous(position);
-		}
-		if (this.head === position) {
+			this[this.previous(position)].next = null;
+		} else if (this.head === position) {
 			this.head = this[this.head].next;
 		} else {	
 			this[this.previous(position)].next = this[position].next;
-			delete this[position];
 		}
+		delete this[position];
+		return true;
 	}
 	// Function place() takes an entry and adds it to the linked list to its appropriate position based on date
+	// Todo: Fix the goddamn thing AGAIN
 	this.place = function(value) {
 		if (this.search(value.date) !== false) {
 			return false;
