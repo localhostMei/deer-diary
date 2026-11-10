@@ -117,7 +117,6 @@ function LinkedList() {
 		}
 	}
 	// Function place() takes an entry and adds it to the linked list to its appropriate position based on date
-	// Todo: Fix conditions
 	this.place = function(value) {
 		if (this.search(value.date) !== false) {
 			return false;
@@ -130,11 +129,11 @@ function LinkedList() {
 			return true;
 		}
 		let valueDate = value.date;
-		const valueDateArr = valueDate.split(".");
-		if (this.head.next === undefined) {
+		const [valueDay, valueMonth, valueYear] = valueDate.split(".").map(Number);
+		if (this[this.head].next === null) {
 			let headDate = this[this.head].date;
-			const headDateArr = headDate.split(".");
-			if (headDateArr[2] > valueDateArr[2] || (headDateArr[2] === valueDateArr[2] && headDateArr[1] > valueDateArr[1]) || (headDateArr[2] === valueDateArr[2] && headDateArr[1] === valueDateArr[1] && headDateArr[0] > valueDateArr[0])) {
+			const [headDateDay, headDateMonth, headDateYear] = headDate.split(".").map(Number);
+			if (headDateYear > valueYear || (headDateYear === valueYear && headDateMonth > valueMonth) || (headDateYear === valueYear && headDateMonth === valueMonth && headDateDay > valueDay)) {
 				this.prepend(value);
 			} else {
 				this.append(value);
@@ -143,16 +142,15 @@ function LinkedList() {
 		}
 		let index = this.head;
 		let headNextDate = this[this[this.head].next].date;
-		const headNextDateArr = headNextDate.split(".");
-		if (headnextYear > valueDateArr[2] || (headnextYear === valueDateArr[2] && headnextMonth > valueDateArr[1]) || (headnextYear === valueDateArr[2] && headnextMonth === valueDateArr[1] && headnextDay > valueDateArr[0])) {
+		const [headNextDay, headNextMonth, headNextYear] = headNextDate.split(".").map(Number);
+		if (headNextYear > valueYear || (headNextYear === valueYear && headNextMonth > valueMonth) || (headNextYear === valueYear && headNextMonth === valueMonth && headNextDay > valueDay)) {
 			this.prepend(value);
 			return true;
 		}
 		while (this[index].next !== null) {
 			let nextDate = this[this[index].next].date;
-			const nextDateArr = [nextDay, nextMonth, nextYear]; 
-			nextDateArr = nextDate.split(".");
-			if (nextYear > valueDateArr[2] || (nextYear === valueDateArr[2] && nextMonth > valueDateArr[1]) || (nextYear === valueDateArr[2] && nextMonth === valueDateArr[1] && nextDay > valueDateArr[0])) {
+			const [nextDateDay, nextDateMonth, nextDateYear] = nextDate.split(".").map(Number);
+			if (nextDateYear > valueYear || (nextDateYear === valueYear && nextDateMonth > valueMonth) || (nextDateYear === valueYear && nextDateMonth === valueMonth && nextDateDay > valueDay)) {
 				this.insert(value, index);
 				return true;
 			}
@@ -185,38 +183,47 @@ function day(date) {
 	this.entries = new List();
 }
 
+// Todo
 function newEntry() {
 	
 }
 
+// Todo
 function navPrevious() {
 	
 }
 
+// Todo
 function navNext() {
 	
 }
 
+// Todo
 function navOldest() {
 	console.log("Test");
 }
 
+// Todo
 function navLatest() {
 	
 }
 
+// Todo
 function removeEntry() {
 	
 }
 
+// Todo
 function saveDiary() {
 	
 }
 
+// Todo
 function loadDiary() {
 	
 }
 
+// Todo
 function unloadDiary() {
 	
 }
@@ -237,6 +244,8 @@ days.place(new day("00.11.2026"));
 days.place(new day("00.11.2026"));
 days.place(new day("00.11.2026"));
 days.place(new day("22.1.1995"));
+days.place(new day(currentDate));
+days.place(new day(currentDate));
 
 
 // days.insert(new day("01.11.2026"), days.place(new day("01.11.2026")));
