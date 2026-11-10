@@ -18,6 +18,7 @@ function List() {
 	}
 }
 
+// Todo: Clean up
 function LinkedList() {
 	this.increment = 0,
 	this.head = null,
@@ -164,7 +165,11 @@ function LinkedList() {
 		let index = this.head;
 		let output = "";
 		while (index !== null) {
-			output += `[${index}] (${this[index].date}) \n`;
+			output += `{${index}} [${this[index].date}] `;
+			for (let i = 0; i < this[index].entries.length; i++) {
+				output += `(${this[index].entries[i].title} | ${this[index].entries[i].content}) `;
+			}
+			output += `\n`;
 			index = this[index].next;
 		}
 		console.log(output);
@@ -183,9 +188,10 @@ function day(date) {
 	this.entries = new List();
 }
 
-// Todo
 function newEntry() {
-	
+	days.place(new day(current));
+	days[days.search(current)].entries.add(new entry(title, content));
+	days.print();
 }
 
 // Todo
@@ -229,23 +235,20 @@ function unloadDiary() {
 }
 
 // This is where the valley of functions ends
+const days = new LinkedList();
 let today = new Date().toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
 let currentDate = today;
+let current = currentDate;
+
+let title = "lalalalalalala";
+let content = "lalalalalalala";
 
 // Testing area
-const days = new LinkedList();
 
-days.place(new day("01.11.2026"));
-days[days.search("01.11.2026")].entries.add(new entry("Mei's day", "Lulu"));
-days.place(new day("00.11.2026"));
-days.place(new day("00.11.2025"));
-days.place(new day("30.9.2026"));
-days.place(new day("00.11.2026"));
-days.place(new day("00.11.2026"));
-days.place(new day("00.11.2026"));
-days.place(new day("22.1.1995"));
-days.place(new day(currentDate));
-days.place(new day(currentDate));
+
+// newEntry("Lucy", "Lucyloo");
+// newEntry("Mei", "Meimeimei");
+// days.place(new day(currentDate));
 
 
 // days.insert(new day("01.11.2026"), days.place(new day("01.11.2026")));
