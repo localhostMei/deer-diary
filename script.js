@@ -1,3 +1,5 @@
+// I'm tired
+
 function List() {
 	this.length = 0,
 	this.add = function(value) {
@@ -21,13 +23,14 @@ function List() {
 	}
 }
 
-// Todo: Clean up
 function LinkedList() {
 	this.increment = 0,
 	this.head = null,
 	this.tail = null,
-	// Function previous() takes in a position and returns the position of the previous node
 	this.previous = function(position) {
+		if (this.head === position) {
+			return false;
+		}
 		let index = this.head;
 		while (index !== null) {
 			if (this[index].next === position) {
@@ -37,7 +40,6 @@ function LinkedList() {
 		}
 		return false;
 	}
-	// Function search() takes in an entry and returns the position if it's already in the linked list
 	this.search = function(value) {
 		let index = this.head;
 		while (index !== null) {
@@ -48,7 +50,6 @@ function LinkedList() {
 		}
 		return false;
 	}
-	// Function append() takes an entry and adds it to the tail of the linked list
 	this.append = function(value) {
 		if (this.search(value.date) !== false) {
 			return false;
@@ -62,7 +63,6 @@ function LinkedList() {
 		this.increment++;
 		return true;
 	}
-	// Function prepend() takes an entry and adds it before the head of the linked list
 	this.prepend = function(value) {
 		if (this.search(value.date) !== false) {
 			return false;
@@ -76,12 +76,11 @@ function LinkedList() {
 		this.increment++;
 		return true;
 	}
-	// Function insert() takes an entry and position and adds it after the node on position
 	this.insert = function(value, position) {
 		if (this.search(value.date) !== false) {
 			return false;
 		}
-		if (this.position === undefined) {
+		if (this[position] === undefined) {
 			return false;
 		}
 		if (this.tail === position) {
@@ -93,7 +92,6 @@ function LinkedList() {
 		this.increment++;
 		return true;
 	}
-	// Function remove() takes a position and deletes its node
 	this.remove = function(position) {
 		if (this.head === null) {
 			return false;
@@ -112,8 +110,6 @@ function LinkedList() {
 		delete this[position];
 		return true;
 	}
-	// Function place() takes an entry and adds it to the linked list to its appropriate position based on date
-	// Todo: Fix the goddamn thing AGAIN
 	this.place = function(value) {
 		if (this.search(value.date) !== false) {
 			return false;
@@ -125,29 +121,18 @@ function LinkedList() {
 			this.increment++;
 			return true;
 		}
-		let valueDate = value.date;
-		const [valueDay, valueMonth, valueYear] = valueDate.split(".").map(Number);
-		if (this[this.head].next === null) {
-			let headDate = this[this.head].date;
-			const [headDateDay, headDateMonth, headDateYear] = headDate.split(".").map(Number);
-			if (headDateYear > valueYear || (headDateYear === valueYear && headDateMonth > valueMonth) || (headDateYear === valueYear && headDateMonth === valueMonth && headDateDay > valueDay)) {
-				this.prepend(value);
-			} else {
-				this.append(value);
-			}
-			return true;
-		}
-		let index = this.head;
-		let headNextDate = this[this[this.head].next].date;
-		const [headNextDay, headNextMonth, headNextYear] = headNextDate.split(".").map(Number);
-		if (headNextYear > valueYear || (headNextYear === valueYear && headNextMonth > valueMonth) || (headNextYear === valueYear && headNextMonth === valueMonth && headNextDay > valueDay)) {
+		let splitDate = value.date.split(".");
+		let valueDate = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
+		splitDate = this[this.head].date.split(".");
+		let headDate = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
+		if (valueDate < headDate) {
 			this.prepend(value);
 			return true;
 		}
+		let index = this.head;
 		while (this[index].next !== null) {
-			let nextDate = this[this[index].next].date;
-			const [nextDateDay, nextDateMonth, nextDateYear] = nextDate.split(".").map(Number);
-			if (nextDateYear > valueYear || (nextDateYear === valueYear && nextDateMonth > valueMonth) || (nextDateYear === valueYear && nextDateMonth === valueMonth && nextDateDay > valueDay)) {
+			splitDate = this[this[index].next].date.split(".");
+			if (new Date(splitDate[2], splitDate[1] - 1, splitDate[0]) > valueDate) {
 				this.insert(value, index);
 				return true;
 			}
@@ -156,7 +141,6 @@ function LinkedList() {
 		this.append(value);
 		return true;
 	}
-	// Function print() logs the linked list and its contents in console
 	this.print = function() {
 		let index = this.head;
 		let output = "";
@@ -174,8 +158,13 @@ function LinkedList() {
 }
 
 function entry(title, content) {
+	this.index = days[days.search(current)].entries.length;
 	this.title = title;
 	this.content = content;
+	// Potentially useless?
+	this.remove = function() {
+		return days[currentPosition].entries.remove(this.index);
+	}
 }
 
 function day(date) {
@@ -185,39 +174,49 @@ function day(date) {
 }
 
 function newEntry() {
+	if (title.value === "" || content.value === "") {
+		return false;
+	}
 	days.place(new day(current));
-	days[days.search(current)].entries.add(new entry(title.value, content.value));
+	globalVarUpdate();
+	days[currentPosition].entries.add(new entry(title.value, content.value));
 	days.print();
+	return true;
 }
 
-// Todo
 function navPrevious() {
-	
+	currentDate.setDate(currentDate.getDate() - 1);
+	globalVarUpdate();
+	return true;
 }
 
-// Todo
 function navNext() {
-	
+	currentDate.setDate(currentDate.getDate() + 1);
+	globalVarUpdate();
+	return true;
 }
 
 function navOldest() {
-	current = days[days.head].date;
-	currentLog.innerText = current;
+	let splitDate = days[days.head].date.split(".");
+	currentDate.setFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
+	globalVarUpdate();
+	return true;
 }
 
 function navLatest() {
-	current = days[days.tail].date;
-	currentLog.innerText = current;
+	let splitDate = days[days.tail].date.split(".");
+	currentDate.setFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
+	globalVarUpdate();
+	return true;
 }
 
-// Todo: Make it work with an input!
-function removeEntry() {
-	let index = days.search(current);
-	if (index === false) {
+function removeEntry(index) {
+	if (currentPosition === false) {
 		return false;
 	}
-	days[index].entries.remove(index);
+	days[currentPosition].entries[index].remove();
 	days.print();
+	return true;
 }
 
 // Todo
@@ -230,30 +229,31 @@ function loadDiary() {
 	
 }
 
-// Todo
 function unloadDiary() {
-	
+	days = new LinkedList();
+	today = new Date();
+	currentDate = today;
+	current = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
+	currentPosition = days.search(current);
+	currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
 }
 
-// This is where the valley of functions ends
-const days = new LinkedList();
-let today = new Date().toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
-let currentDate = today;
-let current = currentDate;
+function globalVarUpdate() {
+	current = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
+	currentPosition = days.search(current);
+	currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
+	return true;
+}
 
-const title = document.querySelector("#title");
+// Global variables
+let days = new LinkedList();
+
+let today = new Date();
+let currentDate = today;
+let current = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
+let currentPosition = days.search(current);
+
+const title = document.getElementById("title");
 const content = document.getElementById("content");
 const currentLog = document.getElementById("currentLog");
-currentLog.innerText = current;
-
-// Testing area
-
-
-// newEntry("Lucy", "Lucyloo");
-// newEntry("Mei", "Meimeimei");
-// days.place(new day(currentDate));
-
-
-// days.insert(new day("01.11.2026"), days.place(new day("01.11.2026")));
-// days[days.search("01.11.2026")].entries.add(new entry("Mei's day", "Lulu"));
-days.print();
+currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
