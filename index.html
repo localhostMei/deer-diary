@@ -6,18 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Deer Diary</title>
 	<link rel="stylesheet" href="style.css">
-	<script src="script.js"></script> 
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
     <main>
 		<section id="toolbar">
 			<ul>
+				<input type="text" id="title"> <br>
+				<input type="text" id="content">
 				<li>
 					<button onclick="newEntry()">New</button>
 				</li>
 				<li>
 					<button onclick="navPrevious()">Previous</button>
+				</li>
+				<li>
+					<p id="currentLog"></p>
 				</li>
 				<li>
 					<button onclick="navNext()">Next</button>
@@ -35,7 +39,7 @@
 					<button onclick="loadDiary()">Load</button>
 				</li>
 				<li>
-					<button onclick="unloadDiary()">Load</button>
+					<button onclick="unloadDiary()">Unload</button>
 				</li>
 			</ul>
 		</section>
@@ -52,5 +56,6 @@
 			<p>Made with love by localhostMei.</p>
 		</footer>
 	</main>
+	<script src="script.js"></script> 
   </body>
 </html>

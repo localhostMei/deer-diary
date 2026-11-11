@@ -14,6 +14,9 @@ function List() {
 		}
 		delete this[this.length - 1];
 		this.length--;
+		if (this.length == 0) {
+			days.remove(days.search(current));
+		}
 		return true;
 	}
 }
@@ -78,12 +81,8 @@ function LinkedList() {
 		if (this.search(value.date) !== false) {
 			return false;
 		}
-		if (this.head === null) {
-			this.head = this.increment;
-			this.tail = this.increment;
-			this[this.increment] = value;
-			this.increment++;
-			return true;
+		if (this.position === undefined) {
+			return false;
 		}
 		if (this.tail === position) {
 			this.tail = this.increment;
@@ -187,7 +186,7 @@ function day(date) {
 
 function newEntry() {
 	days.place(new day(current));
-	days[days.search(current)].entries.add(new entry(title, content));
+	days[days.search(current)].entries.add(new entry(title.value, content.value));
 	days.print();
 }
 
@@ -201,19 +200,24 @@ function navNext() {
 	
 }
 
-// Todo
 function navOldest() {
-	console.log("Test");
+	current = days[days.head].date;
+	currentLog.innerText = current;
 }
 
-// Todo
 function navLatest() {
-	
+	current = days[days.tail].date;
+	currentLog.innerText = current;
 }
 
-// Todo
+// Todo: Make it work with an input!
 function removeEntry() {
-	
+	let index = days.search(current);
+	if (index === false) {
+		return false;
+	}
+	days[index].entries.remove(index);
+	days.print();
 }
 
 // Todo
@@ -237,8 +241,10 @@ let today = new Date().toLocaleDateString("cs-CZ", { day: 'numeric', year: 'nume
 let currentDate = today;
 let current = currentDate;
 
-let title = "lalalalalalala";
-let content = "lalalalalalala";
+const title = document.querySelector("#title");
+const content = document.getElementById("content");
+const currentLog = document.getElementById("currentLog");
+currentLog.innerText = current;
 
 // Testing area
 
