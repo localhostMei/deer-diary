@@ -1,5 +1,4 @@
-// I'm tired
-
+// Todo: Redo according to the assignment
 function List() {
 	this.length = 0,
 	this.add = function(value) {
@@ -155,16 +154,20 @@ function LinkedList() {
 		console.log(output);
 		return true;
 	}
+	this.log = function() {
+		entriesLog.innerHTML = "";
+		if (currentPosition === false) {
+			return false;
+		}
+		for (let i = 0; i < this[currentPosition].entries.length; i++) {
+			logEntry(this[currentPosition].entries[i], i);
+		}
+	}
 }
 
 function entry(title, content) {
-	this.index = days[days.search(current)].entries.length;
 	this.title = title;
 	this.content = content;
-	// Potentially useless?
-	this.remove = function() {
-		return days[currentPosition].entries.remove(this.index);
-	}
 }
 
 function day(date) {
@@ -173,14 +176,28 @@ function day(date) {
 	this.entries = new List();
 }
 
+function entryFormShow() {
+	title.value = "";
+	content.value = "";
+	entryForm.style.display = "block";
+}
+
+function entryFormHide() {
+	entryForm.style.display = "none";
+	entryFormError.style.visibility = "hidden";
+}
+
 function newEntry() {
 	if (title.value === "" || content.value === "") {
+		entryFormError.style.visibility = "visible";
 		return false;
 	}
+	entryFormHide();
 	days.place(new day(current));
 	globalVarUpdate();
-	days[currentPosition].entries.add(new entry(title.value, content.value));
-	days.print();
+	const tempEntry = new entry(title.value, content.value);
+	days[currentPosition].entries.add(tempEntry);
+	days.log();
 	return true;
 }
 
@@ -214,9 +231,15 @@ function removeEntry(index) {
 	if (currentPosition === false) {
 		return false;
 	}
-	days[currentPosition].entries[index].remove();
-	days.print();
+	days[currentPosition].entries.remove(index);
+	days.log();
 	return true;
+}
+
+function logEntry(value, index) {
+	let entry = document.createElement("div");
+	entry.innerHTML = `<button onclick="removeEntry(${index})">Remove</button><h2>${index + 1}. ${value.title}</h2><p>${value.content}</p>`;
+	entriesLog.appendChild(entry);
 }
 
 // Todo
@@ -230,18 +253,22 @@ function loadDiary() {
 }
 
 function unloadDiary() {
+	entryFormHide();
 	days = new LinkedList();
 	today = new Date();
 	currentDate = today;
 	current = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
 	currentPosition = days.search(current);
 	currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
+	days.log();
 }
 
 function globalVarUpdate() {
+	entryFormHide();
 	current = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  }).replace(/\s/g, "");
 	currentPosition = days.search(current);
 	currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
+	days.log();
 	return true;
 }
 
@@ -255,5 +282,8 @@ let currentPosition = days.search(current);
 
 const title = document.getElementById("title");
 const content = document.getElementById("content");
-const currentLog = document.getElementById("currentLog");
+const currentLog = document.getElementById("current");
+const entriesLog = document.getElementById("entries");
+const entryForm = document.getElementById("entryForm");
+const entryFormError = document.getElementById("entryFormError");
 currentLog.innerText = currentDate.toLocaleDateString("cs-CZ", { day: 'numeric', year: 'numeric', month: 'numeric'  });
