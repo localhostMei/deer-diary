@@ -1,9 +1,14 @@
-// Todo: Redo according to the assignment
+// Todo: Add confirmation to deletion, ending the session and loading a file
+
 function List() {
+	this.maxLength = 1;
 	this.length = 0,
 	this.add = function(value) {
 		this[this.length] = value;
 		this.length++;
+		if (this.length === this.maxLength) {
+			this.maxLength *= 2;
+		}
 		return true;
 	},
 	this.remove = function(index) {
@@ -15,9 +20,6 @@ function List() {
 		}
 		delete this[this.length - 1];
 		this.length--;
-		if (this.length == 0) {
-			days.remove(days.search(current));
-		}
 		return true;
 	}
 }
@@ -56,6 +58,7 @@ function LinkedList() {
 		if (this.head === null) {
 			this.head = this.increment;
 		}
+		value.next = null;
 		this[this.increment] = value;
 		this[this.tail].next = this.increment;
 		this.tail = this.increment;
@@ -179,7 +182,7 @@ function day(date) {
 function entryFormShow() {
 	title.value = "";
 	content.value = "";
-	entryForm.style.display = "block";
+	entryForm.style.display = "flex";
 }
 
 function entryFormHide() {
@@ -232,7 +235,10 @@ function removeEntry(index) {
 		return false;
 	}
 	days[currentPosition].entries.remove(index);
-	days.log();
+	if (days[currentPosition].entries.length == 0) {
+		days.remove(currentPosition);
+	}
+	globalVarUpdate();
 	return true;
 }
 
@@ -242,14 +248,46 @@ function logEntry(value, index) {
 	entriesLog.appendChild(entry);
 }
 
-// Todo
 function saveDiary() {
-	
+	const a = document.createElement("a");
+	a.href = URL.createObjectURL(new Blob([JSON.stringify(days, null, 2)], {
+	}));
+	a.setAttribute("download", "data.json");
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
 }
 
-// Todo
 function loadDiary() {
-	
+	var input = document.createElement('input');
+	input.type = 'file';
+	input.onchange = e => { 
+		var file = e.target.files[0]; 
+		var reader = new FileReader();
+		reader.readAsText(file,'UTF-8');
+		reader.onload = readerEvent => {
+			const tempDays = new LinkedList();
+			const content = JSON.parse(readerEvent.target.result);
+			if (content.increment === undefined) {
+				return false;
+			}
+			for (let i = 0; i < content.increment; i++) {
+				if (content[i] == undefined) {
+					continue;
+				}
+				tempDays.place(new day(content[i].date));
+				let tempPosition = tempDays.search(content[i].date);
+				for (let j = 0; j < content[i].entries.length; j++) {
+					const tempEntry = new entry(content[i].entries[j].title, content[i].entries[j].content);
+					tempDays[tempPosition].entries.add(tempEntry);
+				}
+			}
+			unloadDiary();
+			days = tempDays;
+			globalVarUpdate();
+		}
+	}
+	input.click();
 }
 
 function unloadDiary() {
