@@ -1,5 +1,3 @@
-/* Todo: Rearrange css */
-
 * {
 	font-family: Times New Roman;
 	margin: 0;
@@ -91,6 +89,7 @@ ul li {
 #time {
 	justify-content: center;
 	padding: 2px;
+	margin: 8px;
 	color: white;
 	font-weight: bold;
 }
@@ -121,13 +120,43 @@ h2 {
 	margin-bottom: 10px;
 }
 
-/* Todo: Center and style */
 #entryForm {
 	display: none;
-	/* max-width: 80%; */
+	padding: 15px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	max-width: 80%;
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 10px;
 	flex-direction: column;
-	align-items: center;
-	
+	border: 1px solid white;
+	margin: 10px auto;
+	color: white;
+	font-weight: bold;
+}
+
+#entryForm input {
+	width: 100%;
+	box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid white;
+	border-radius: 5px;
+	color: white;
+	margin-bottom: 10px;
+}
+
+#entryForm textarea {
+	box-sizing: border-box;
+	width: 100%;
+	height: 150px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid white;
+	border-radius: 5px;
+	color: white;
+	resize: none;
+}
+
+#entryForm p {
+	margin-bottom: 4px;
 }
 
 #entryFormError {
@@ -138,6 +167,7 @@ h2 {
 	position: fixed;
 	bottom: 0;
 	right: 0;
+	z-index:-1;
 	width: 49%;
 }
 

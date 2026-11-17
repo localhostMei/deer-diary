@@ -182,7 +182,7 @@ function day(date) {
 function entryFormShow() {
 	title.value = "";
 	content.value = "";
-	entryForm.style.display = "flex";
+	entryForm.style.display = "block";
 }
 
 function entryFormHide() {
@@ -217,6 +217,9 @@ function navNext() {
 }
 
 function navOldest() {
+	if (days.head === null) {
+		return false;
+	}
 	let splitDate = days[days.head].date.split(".");
 	currentDate.setFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
 	globalVarUpdate();
@@ -224,6 +227,9 @@ function navOldest() {
 }
 
 function navLatest() {
+	if (days.head === null) {
+		return false;
+	}
 	let splitDate = days[days.tail].date.split(".");
 	currentDate.setFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
 	globalVarUpdate();
