@@ -1,5 +1,3 @@
-// Todo: Add confirmation to deletion, ending the session and loading a file
-
 function List() {
 	this.maxLength = 1;
 	this.length = 0,
@@ -237,6 +235,9 @@ function navLatest() {
 }
 
 function removeEntry(index) {
+	if (confirm("Are you sure you want to remove this entry?") === false) {
+		return false;
+	}
 	if (currentPosition === false) {
 		return false;
 	}
@@ -265,6 +266,9 @@ function saveDiary() {
 }
 
 function loadDiary() {
+	if (confirm("Are you sure you want to end the session and load a file?") === false) {
+		return false;
+	}
 	var input = document.createElement('input');
 	input.type = 'file';
 	input.onchange = e => { 
@@ -294,6 +298,13 @@ function loadDiary() {
 		}
 	}
 	input.click();
+}
+
+function confirmDiaryUnload() {
+	if (confirm("Are you sure you want to end the session?") === false) {
+		return false;
+	}
+	unloadDiary();
 }
 
 function unloadDiary() {
