@@ -1,5 +1,7 @@
 # deer-diary
 Deer Diary is a simple local diary app made with HTML, CSS and JavaScript for my school's Algorithms class. Its visuals are inspired by the comedy anime My Deer Friend Nokotan.
+
+Available at: https://localhostmei.github.io/deer-diary/
 ## Requirements
 An internet browser with modern JavaScript support.
 ## Installation
